@@ -1,0 +1,26 @@
+{
+  "name": "seterrorcodes",
+  "version": "0.0.1",
+  "description": "seterrorcodes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "seterrorcodes"
+  ],
+  "bin": {
+    "seterrorcodes": "./index.js"
+  },
+  "dependencies": {
+    "async": "^2.6.0",
+    "commander": "^2.12.2",
+    "escape-string-regexp": "^1.0.5",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "replace-in-file": "^3.1.0"
+  }
+}
