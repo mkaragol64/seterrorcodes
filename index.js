@@ -92,10 +92,12 @@ var allDirectories = getDirectoriesRecursive(directory);
 var allFiles       = [];
 var changedFiles   = [];
 
-var finalOutput = {};
+var unique_random_numbers = [];
+
+var finalOutput    = {};
 async.series([
 
-    //
+    // dosya listesini al
     function(callback){
         var all = walkSync(directory);
         all.forEach(function (file) {
@@ -107,9 +109,44 @@ async.series([
         return callback();
     },
 
+    // toplam işlem occurance sayısını al
+    function(callback){
+
+        function generateRandomBetween(amount=3500){
+
+            var limit                 = 10,
+                amount                = 2500,
+                lower_bound           = 10001,
+                upper_bound           = 99999,
+                unique_random_numbers = [];
+
+            if (amount > limit) limit = amount; //Infinite loop if you want more unique
+                                                //Natural numbers than exist in a
+                                                // given range
+            while (unique_random_numbers.length < limit) {
+                var random_number = Math.floor(Math.random()*(upper_bound - lower_bound) + lower_bound);
+                if (unique_random_numbers.indexOf(random_number) == -1) { 
+                    // Yay! new random number
+                    unique_random_numbers.push( random_number );
+                }
+            }
+
+            return unique_random_numbers;
+        }
+        
+
+        unique_random_numbers = generateRandomBetween();
+        
+return false;
+    },
+
+
     //
     function(callback){
 
+        return callback();
+        return false;
+         
         // her dosya için
         async.eachOfSeries(allFiles, function(file, key1, callback){
             
@@ -118,18 +155,19 @@ async.series([
                 if( content.includes('customError("' + from + '"') ){
 
                     file = '' + file;
-                    console.log("file ", file);
+                    //console.log("file ", file);
 
                     var escapedFrom = escapeStringRegexp(from);
- console.log("escapedFrom ", escapedFrom);
+                    //console.log("escapedFrom ", escapedFrom);
 
                     // content deki kurala uyanları array e at
                     var rege = new RegExp(escapedFrom, "g");
- console.log("rege ", rege);
+                    //console.log("rege ", rege);
 
                     options.files = file;
                     options.from  = rege;
                     options.to    = to;
+                    
                     
                     replace(options)
                     .then(changes => {
@@ -149,11 +187,9 @@ async.series([
             });
 
         }, (error) => {
-            if(error){ console.log(error); }
+            if(error){ console.log(error); } 
             return callback(); 
         });
-
-        
 
     },
 
